@@ -7,13 +7,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Cliente {
-  id        Int     @id @default(autoincrement())
+model contato {
   nome      String
   email     String  @unique
   telefone  String
-  endereco  String
-  pedidos   Pedido[]
+  dataPedido  DateTime @default(now()) 
+  assunto String
+  mensagem String
 }
 
 model Pedido {
@@ -21,8 +21,6 @@ model Pedido {
   dataPedido DateTime    @default(now())
   status     String
   total      Decimal
-  clienteId  Int
-  cliente    Cliente     @relation(fields: [clienteId], references: [id])
   itensPedido ItemPedido[]
 }
 
