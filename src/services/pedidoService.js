@@ -9,7 +9,7 @@ const criarPedido = async (clienteId, mesaId, itens) => {
             mesaId,
             total,
             itens: {
-                createMany: itens.map(item => ({
+                create: itens.map(item => ({
                     menuId: item.menuId,
                     quantidade: item.quantidade,
                     precoUnitario: item.precoUnitario,
@@ -31,7 +31,20 @@ const listarPedidos = async () => {
     });
 };
 
+const buscarPedidoPorId = async (id) => {
+    return await prisma.pedido.findUnique({
+        where: { id: parseInt(id) },
+        include: { itens: true, cliente: true, mesa: true }
+    });
+};
+
+const cancelarPedido = async (id) => {
+    return await prisma.pedido.delete({ where: { id: parseInt(id) } });
+};
+
 module.exports = {
     criarPedido,
-    listarPedidos
+    listarPedidos,
+    buscarPedidoPorId,
+    cancelarPedido
 };
