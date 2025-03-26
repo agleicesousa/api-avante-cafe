@@ -8,38 +8,41 @@ datasource db {
 }
 
 model Mesa {
-  id        Int      @id @default(autoincrement())
-  numero    Int      @unique
-  ocupada   Boolean  @default(false)
-  pedidos   Pedido[]
+  id       Int       @id @default(autoincrement())
+  numero   Int       @unique
+  ocupada  Boolean   @default(false)
+  pedidos  Pedido[]  @relation("MesaPedidos")
+  clientes Cliente[]
 }
 
 model Cliente {
-  id        Int      @id @default(autoincrement())
-  nome      String
-  mesa      Mesa     @relation(fields: [mesaId], references: [id])
-  mesaId    Int
-  pedidos   Pedido[]
+  id      Int      @id @default(autoincrement())
+  nome    String
+  mesa    Mesa?    @relation(fields: [mesaId], references: [id])
+  mesaId  Int?
+  pedidos Pedido[]
 }
 
 model Pedido {
-  id          Int          @id @default(autoincrement())
-  dataPedido  DateTime     @default(now())
-  total       Decimal
-  itens       ItemPedido[]
-  cliente     Cliente      @relation(fields: [clienteId], references: [id])
-  clienteId   Int
+  id         Int          @id @default(autoincrement())
+  dataPedido DateTime     @default(now())
+  total      Decimal
+  itens      ItemPedido[]
+  cliente    Cliente      @relation(fields: [clienteId], references: [id])
+  clienteId  Int
+  mesa       Mesa?        @relation(fields: [mesaId], references: [id], name: "MesaPedidos")
+  mesaId     Int?
 }
 
 model Menu {
-  id          Int          @id @default(autoincrement())
-  nome        String
-  descricao   String
-  preco       Decimal
-  categoria   String
-  disponivel  Boolean      @default(true)
-  imagem      String
-  itens       ItemPedido[]
+  id         Int          @id @default(autoincrement())
+  nome       String
+  descricao  String
+  preco      Decimal
+  categoria  String
+  disponivel Boolean      @default(true)
+  imagem     String
+  itens      ItemPedido[]
 }
 
 model ItemPedido {
@@ -54,9 +57,9 @@ model ItemPedido {
 }
 
 model Contato {
-  id          Int      @id @default(autoincrement())
-  nome        String
-  email       String   @unique
-  mensagem    String
+  id           Int      @id @default(autoincrement())
+  nome         String
+  email        String   @unique
+  mensagem     String
   dataMensagem DateTime @default(now())
 }
