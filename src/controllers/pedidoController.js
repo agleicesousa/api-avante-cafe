@@ -10,7 +10,16 @@ const criarPedido = async (req, res) => {
     }
 };
 
+const listarPedidos = async (req, res) => {
+    try {
+        const pedidos = await pedidoService.listarPedidos();
+        res.json(pedidos);
+    } catch (error) {
+        res.status(500).json({ error: "Erro ao buscar pedidos" });
+    }
+};
 
 module.exports = {
-    criarPedido
+    criarPedido,
+    listarPedidos
 };

@@ -21,6 +21,17 @@ const criarPedido = async (clienteId, mesaId, itens) => {
     });
 };
 
+const listarPedidos = async () => {
+    return await prisma.pedido.findMany({
+        include: {
+            itens: true,
+            cliente: true,
+            mesa: true
+        }
+    });
+};
+
 module.exports = {
-    criarPedido
+    criarPedido,
+    listarPedidos
 };
