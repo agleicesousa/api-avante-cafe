@@ -7,38 +7,56 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model contato {
+model Mesa {
+  id        Int      @id @default(autoincrement())
+  numero    Int      @unique
+  ocupada   Boolean  @default(false)
+  pedidos   Pedido[]
+}
+
+model Cliente {
+  id        Int      @id @default(autoincrement())
   nome      String
-  email     String  @unique
-  telefone  String
-  dataPedido  DateTime @default(now()) 
-  assunto String
-  mensagem String
+  mesa      Mesa     @relation(fields: [mesaId], references: [id])
+  mesaId    Int
+  pedidos   Pedido[]
 }
 
 model Pedido {
-  id         Int         @id @default(autoincrement())
-  dataPedido DateTime    @default(now())
-  status     String
-  total      Decimal
-  itensPedido ItemPedido[]
+  id          Int          @id @default(autoincrement())
+  dataPedido  DateTime     @default(now())
+  total       Decimal
+  itens       ItemPedido[]
+  cliente     Cliente      @relation(fields: [clienteId], references: [id])
+  clienteId   Int
 }
 
 model Menu {
-  id          Int         @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   nome        String
   descricao   String
   preco       Decimal
   categoria   String
-  itensPedido ItemPedido[]
+  disponivel  Boolean      @default(true)
+  imagem      String
+  itens       ItemPedido[]
 }
 
 model ItemPedido {
-  id         Int     @id @default(autoincrement())
-  quantidade Int
+  id            Int     @id @default(autoincrement())
+  quantidade    Int
   precoUnitario Decimal
-  pedidoId   Int
-  menuId     Int
-  pedido     Pedido @relation(fields: [pedidoId], references: [id])
-  menu       Menu   @relation(fields: [menuId], references: [id])
+  pedido        Pedido  @relation(fields: [pedidoId], references: [id])
+  pedidoId      Int
+  menu          Menu    @relation(fields: [menuId], references: [id])
+  menuId        Int
+  observacoes   String?
+}
+
+model Contato {
+  id          Int      @id @default(autoincrement())
+  nome        String
+  email       String   @unique
+  mensagem    String
+  dataMensagem DateTime @default(now())
 }
