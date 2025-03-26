@@ -7,10 +7,38 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String  @id @default(uuid())  
-  name      String  
-  email     String  @unique  
-  password  String  
-  createdAt DateTime @default(now())  
+model contato {
+  nome      String
+  email     String  @unique
+  telefone  String
+  dataPedido  DateTime @default(now()) 
+  assunto String
+  mensagem String
+}
+
+model Pedido {
+  id         Int         @id @default(autoincrement())
+  dataPedido DateTime    @default(now())
+  status     String
+  total      Decimal
+  itensPedido ItemPedido[]
+}
+
+model Menu {
+  id          Int         @id @default(autoincrement())
+  nome        String
+  descricao   String
+  preco       Decimal
+  categoria   String
+  itensPedido ItemPedido[]
+}
+
+model ItemPedido {
+  id         Int     @id @default(autoincrement())
+  quantidade Int
+  precoUnitario Decimal
+  pedidoId   Int
+  menuId     Int
+  pedido     Pedido @relation(fields: [pedidoId], references: [id])
+  menu       Menu   @relation(fields: [menuId], references: [id])
 }
