@@ -9,3 +9,10 @@ const criarContato = async (nome, email, mensagem) => {
         }
     });
 };
+const listarContatos = async () => {
+    return await prisma.contato.findMany({
+        orderBy: {
+            dataMensagem: 'desc'
+        }
+    });
+};
