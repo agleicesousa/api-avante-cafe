@@ -7,6 +7,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum CategoriaMenu {
+  CAFES
+  SOBREMESAS
+  ESPECIAIS
+  BEBIDAS_GELADAS
+  CHAS
+}
+
 model Mesa {
   id       Int       @id @default(autoincrement())
   numero   Int       @unique
@@ -17,7 +25,7 @@ model Mesa {
 
 model Cliente {
   id      Int      @id @default(autoincrement())
-  nome    String
+  nome    String?
   mesa    Mesa?    @relation(fields: [mesaId], references: [id])
   mesaId  Int?
   pedidos Pedido[]
@@ -37,11 +45,10 @@ model Pedido {
 model Menu {
   id         Int          @id @default(autoincrement())
   nome       String
-  descricao  String
   preco      Decimal
-  categoria  String
-  disponivel Boolean      @default(true)
-  imagem     String
+  categoria  CategoriaMenu
+  disponivel Boolean?      @default(true)
+  imagem     String?
   itens      ItemPedido[]
 }
 
