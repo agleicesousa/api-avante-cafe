@@ -43,3 +43,14 @@ const buscarContatoPorId = async (req, res) => {
         res.status(500).json({ error: "Erro interno ao buscar mensagem" });
     }
 };
+
+const deletarContato = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await contatoService.deletarContato(id);
+        res.status(204).end();
+    } catch (error) {
+        console.error("Erro ao deletar contato:", error);
+        res.status(500).json({ error: "Erro interno ao deletar mensagem" });
+    }
+};
