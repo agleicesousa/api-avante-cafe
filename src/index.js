@@ -5,6 +5,7 @@ import { connectDB, prismaMiddleware } from './config/database.js';
 
 import pedidoRouter from './routes/pedidoRouter.js';
 import clienteRouter from './routes/clienteRouter.js';
+import menuRouter from './routes/menuRouter.js';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(prismaMiddleware);
 // Rotas
 app.use('/api', pedidoRouter);
 app.use('/api', clienteRouter);
+app.use('/api', menuRouter);
 
 // Rota de verificação de saúde
 app.get('/api/health', (req, res) => {
