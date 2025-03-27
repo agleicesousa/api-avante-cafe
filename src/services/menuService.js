@@ -6,6 +6,7 @@ const criarItemMenu = async (nome, preco, categoria, imagem = null) => {
         if (isNaN(preco) || preco <= 0) {
             throw new Error('Preço deve ser um número positivo');
         }
+
         const novoItem = await prisma.menu.create({
             data: {
                 nome,
@@ -14,6 +15,7 @@ const criarItemMenu = async (nome, preco, categoria, imagem = null) => {
                 imagem
             }
         });
+        
         return novoItem;
     } catch (error) {
         console.error('Erro no serviço ao criar item:', error);
@@ -21,18 +23,21 @@ const criarItemMenu = async (nome, preco, categoria, imagem = null) => {
     }
 };
 
-//Iniciando as listagens (id)
-const listarItens = async (id) => {
+// Buscar item por ID
+const buscarItemPorId = async (id) => {
     try {
-        const menu = await prisma.menu.findUnique({
-            where: {
-                id: parseInt(id)
-            }
-        });
-        return menu;
-    } catch (error) {
-        throw new Error('Item não encontrado' + error.message);
+        if (isNaN(id)) {
+            throw new Error('ID deve ser um número válido');
+        }
 
+        const item = await prisma.menu.findUnique({
+            where: { id: parseInt(id) }
+        });
+
+        return item;
+    } catch (error) {
+        console.error('Erro no serviço ao buscar item por ID:', error);
+        throw new Error(`Falha ao buscar item: ${error.message}`);
     }
 };
 

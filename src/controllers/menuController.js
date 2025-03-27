@@ -33,21 +33,33 @@ export const adicionarItemMenu = async (req, res) => {
   }
 };
 
-export const getMenuItemById = async (req, res) => {
+// Buscar item por ID
+export const buscarItemMenuPorId = async (req, res) => {
   const { id } = req.params;
+
   try {
-    const item = await listarItens(parseInt(id));
-    if (item) {
-      res.json(item);
-    } else {
-      res.status(404).json({ message: 'Item não encontrado' });
+    const item = await buscarItemPorId(parseInt(id));
+
+    if (!item) {
+      return res.status(404).json({
+        success: false,
+        message: 'Item não encontrado'
+      });
     }
+
+    res.json({
+      success: true,
+      data: item
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Erro ao buscar item', error: error.message });
+    console.error('Erro ao buscar item:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro ao buscar item',
+      error: error.message
+    });
   }
 };
-
-
 
 //Buscar por categoria
 export const getMenuItemsByCategory = async (req, res) => {
