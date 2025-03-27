@@ -54,3 +54,10 @@ const deletarContato = async (req, res) => {
         res.status(500).json({ error: "Erro interno ao deletar mensagem" });
     }
 };
+
+module.exports = {
+    criarContato,
+    listarContatos,
+    buscarContatoPorId,
+    deletarContato
+};
