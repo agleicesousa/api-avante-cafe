@@ -90,16 +90,22 @@ export const buscarItensMenuPorCategoria = async (req, res) => {
   }
 };
 
-//Listagem completa
-export const getAllMenuItems = async (req, res) => {
+// Listar todos os itens do menu
+export const listarTodosItensMenu = async (req, res) => {
   try {
-    const lista = await listagemTotal();
-    if (lista.length > 0) {
-      res.json(lista);
-    } else {
-      res.status(404).json({ message: 'Nenhum item encontrado' });
-    }
+    const itens = await listarTodosItens();
+
+    res.json({
+      success: true,
+      data: itens,
+      count: itens.length
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Erro ao listar itens', error: error.message });
+    console.error('Erro ao listar itens:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro ao listar itens do menu',
+      error: error.message
+    });
   }
 };

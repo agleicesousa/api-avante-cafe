@@ -55,15 +55,19 @@ const buscarItensPorCategoria = async (categoria) => {
     }
 };
 
-const listagemTotal = async () => {
+// Listar todos os itens
+const listarTodosItens = async () => {
     try {
-        const lista = await prisma.menu.findMany();
+        const itens = await prisma.menu.findMany({
+            orderBy: { categoria: 'asc' }
+        });
 
-        return lista;
+        return itens;
     } catch (error) {
-        throw new Error('Erro ao apresentar listagem completa' + error.message);
+        console.error('Erro no serviço ao listar itens:', error);
+        throw new Error(`Falha ao listar itens: ${error.message}`);
     }
-}
+};
 
 module.exports = {
     criarMenu,
