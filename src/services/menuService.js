@@ -1,18 +1,23 @@
 const prisma = require('../config/database.js');
-//Criando espaço de inserção dos itens
-const criarMenu = async (item, preco, imagem) => {
+
+// Criar novo item no menu
+const criarItemMenu = async (nome, preco, categoria, imagem = null) => {
     try {
-        const menu = await prisma.menu.create({
+        if (isNaN(preco) || preco <= 0) {
+            throw new Error('Preço deve ser um número positivo');
+        }
+        const novoItem = await prisma.menu.create({
             data: {
-                item,
-                preco,
+                nome,
+                preco: parseFloat(preco),
                 categoria,
                 imagem
             }
         });
-        return menu;
+        return novoItem;
     } catch (error) {
-        throw new Error('Erro ao inserir item' + error.message);
+        console.error('Erro no serviço ao criar item:', error);
+        throw new Error(`Falha ao criar item: ${error.message}`);
     }
 };
 
@@ -55,11 +60,6 @@ const listagemTotal = async () => {
         throw new Error('Erro ao apresentar listagem completa' + error.message);
     }
 }
-
-
-
-
-
 
 module.exports = {
     criarMenu,

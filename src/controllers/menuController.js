@@ -1,20 +1,37 @@
-//Importação do service
-import { criarMenu } from '../services/menuService.js';
-import { listarItens } from '../services/menuService.js';
-import { buscaDeCategoria } from '../services/menuService.js';
-import { listagemTotal } from '../services/menuService.js';
+import {
+  criarItemMenu,
+  buscarItemPorId,
+  buscarItensPorCategoria,
+  listarTodosItens
+} from '../services/menuService.js';
 
-//Adição do novo item
-export const addMenuItem = async (req, res) => {
+// Adição de novo item ao menu
+export const adicionarItemMenu = async (req, res) => {
   const { nome, preco, categoria, imagem } = req.body;
+
+  // Validação básica dos dados de entrada
+  if (!nome || !preco || !categoria) {
+    return res.status(400).json({
+      message: 'Nome, preço e categoria são obrigatórios'
+    });
+  }
+
   try {
-    const newMenu = await criarMenu(nome, preco, categoria, imagem);
-    res.status(201).json(newMenu);
+    const novoItem = await criarItemMenu(nome, preco, categoria, imagem);
+    res.status(201).json({
+      success: true,
+      data: novoItem,
+      message: 'Item criado com sucesso'
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Erro ao criar menu', error: error.message });
+    console.error('Erro ao criar item:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro ao criar item no menu',
+      error: error.message
+    });
   }
 };
-
 
 export const getMenuItemById = async (req, res) => {
   const { id } = req.params;
