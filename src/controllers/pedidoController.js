@@ -1,17 +1,37 @@
 import { 
-    criarPedido, 
+    criarPedidoComCliente,
     listarPedidos, 
     buscarPedidoPorId, 
     cancelarPedido 
 } from "../services/pedidoService.js";
 
-export const criarPedidoController = async (req, res) => {
+export const criarPedidoComClienteController = async (req, res) => {
     try {
-        const { clienteId, mesaId, itens } = req.body;
-        const pedido = await criarPedido(clienteId, mesaId, itens);
-        res.status(201).json({ message: "Pedido criado com sucesso", pedido });
+        const { cliente, mesaId, itens } = req.body;
+
+        // Validações básicas
+        if (!cliente?.nome) {
+            return res.status(400).json({ error: "Nome do cliente é obrigatório" });
+        }
+
+        if (!itens || itens.length === 0) {
+            return res.status(400).json({ error: "O pedido deve conter itens" });
+        }
+
+        const pedido = await criarPedidoComCliente(cliente, mesaId, itens);
+        
+        res.status(201).json({ 
+            success: true,
+            message: "Pedido criado com sucesso", 
+            data: pedido 
+        });
     } catch (error) {
-        res.status(500).json({ error: "Erro ao criar pedido. Tente novamente mais tarde." });
+        console.error("Erro ao criar pedido:", error);
+        res.status(500).json({ 
+            success: false,
+            error: "Erro ao criar pedido. Tente novamente mais tarde.",
+            details: error.message 
+        });
     }
 };
 

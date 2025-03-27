@@ -1,6 +1,6 @@
 import express from "express";
 import { 
-    criarPedidoController, 
+    criarPedidoComClienteController,
     listarPedidosController, 
     buscarPedidoPorIdController, 
     cancelarPedidoController 
@@ -8,7 +8,7 @@ import {
 
 const router = express.Router();
 
-router.post("/pedidos", criarPedidoController);
+router.post("/pedidos/com-cliente", criarPedidoComClienteController);
 router.get("/pedidos", listarPedidosController);
 router.get("/pedidos/:id", buscarPedidoPorIdController);
 router.delete("/pedidos/:id", cancelarPedidoController);

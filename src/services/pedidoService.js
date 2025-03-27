@@ -1,23 +1,41 @@
 import prisma from "../config/database.js";
 
-export const criarPedido = async (clienteId, mesaId, itens) => {
-    const total = itens.reduce((acc, item) => acc + item.quantidade * item.precoUnitario, 0);
+export const criarPedidoComCliente = async (clienteData, mesaId, itens) => {
+    // Calcula o total baseado nos itens
+    const total = itens.reduce((acc, item) => acc + (item.quantidade * item.precoUnitario), 0);
 
-    return await prisma.pedido.create({
-        data: {
-            clienteId,
-            mesaNumero: mesaId ? parseInt(mesaId) : null,
-            total,
-            itens: {
-                create: itens.map(item => ({
-                    menuId: item.menuId,
-                    quantidade: item.quantidade,
-                    precoUnitario: item.precoUnitario,
-                    observacoes: item.observacoes || null
-                }))
+    return await prisma.$transaction(async (prisma) => {
+        // 1. Criar o cliente
+        const cliente = await prisma.cliente.create({
+            data: {
+                nome: clienteData.nome,
+                mesaNumero: mesaId ? parseInt(mesaId) : null
             }
-        },
-        include: { itens: true }
+        });
+
+        // 2. Criar o pedido associado
+        const pedido = await prisma.pedido.create({
+            data: {
+                clienteId: cliente.id,
+                mesaNumero: mesaId ? parseInt(mesaId) : null,
+                total,
+                itens: {
+                    create: itens.map(item => ({
+                        menuId: item.menuId,
+                        quantidade: item.quantidade,
+                        precoUnitario: item.precoUnitario,
+                        observacoes: item.observacoes || null
+                    }))
+                }
+            },
+            include: {
+                itens: true,
+                cliente: true,
+                mesa: true
+            }
+        });
+
+        return pedido;
     });
 };
 
