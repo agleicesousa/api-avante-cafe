@@ -2,7 +2,9 @@ import express, { json } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-import userRoutes from './routes/userRoutes.js';
+import pedidoRouter from './routes/pedidoRouter.js';
+import clienteRouter from './routes/clienteRouter.js';
+import menuRouter from './routes/menuRouter.js'
 
 dotenv.config();
 
@@ -12,7 +14,10 @@ const PORT = process.env.PORT || 3000;
 app.use(json());
 app.use(cors());
 
-app.use('/api', userRoutes);
+app.use('/api', pedidoRouter);
+app.use('/api', menuRouter);
+app.use('/api', clienteRouter);
+
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
