@@ -16,3 +16,8 @@ const listarContatos = async () => {
         }
     });
 };
+const buscarContatoPorId = async (id) => {
+    return await prisma.contato.findUnique({
+        where: { id: parseInt(id) }
+    });
+};
