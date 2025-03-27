@@ -1,33 +1,26 @@
 const prisma = require("../config/database");
 
-const criarCliente = async (nome, mesaId) => {
+const criarCliente = async (nome, mesaNumero) => {
     return await prisma.cliente.create({
         data: {
             nome,
-            mesaId: mesaId ? parseInt(mesaId) : null
+            mesaNumero: mesaNumero ? parseInt(mesaNumero) : null,
         },
         include: {
-            mesa: true
-        }
+            mesa: true,
+        },
     });
 };
 
-const buscarClientePorMesa = async (mesaId) => {
+const buscarClientePorMesa = async (mesaNumero) => {
     return await prisma.cliente.findFirst({
         where: {
-            mesaId: parseInt(mesaId)
+            mesaNumero: parseInt(mesaNumero),
         },
         include: {
-            pedidos: {
-                include: {
-                    itens: {
-                        include: {
-                            menu: true
-                        }
-                    }
-                }
-            }
-        }
+            pedidos: true,
+            mesa: true,
+        },
     });
 };
 

@@ -3,6 +3,6 @@ const router = express.Router();
 const clienteController = require("../controllers/clienteController");
 
 router.post("/clientes", clienteController.criarCliente);
-router.get("/clientes/mesa/:mesaId", clienteController.buscarClientePorMesa);
+router.get("/clientes/mesa/:mesaNumero", clienteController.buscarClientePorMesa);
 
 module.exports = router;
