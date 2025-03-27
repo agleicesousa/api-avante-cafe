@@ -21,3 +21,8 @@ const buscarContatoPorId = async (id) => {
         where: { id: parseInt(id) }
     });
 };
+const deletarContato = async (id) => {
+    return await prisma.contato.delete({
+        where: { id: parseInt(id) }
+    });
+};
