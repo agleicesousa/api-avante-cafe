@@ -5,7 +5,6 @@ import { connectDB, prismaMiddleware } from './config/database.js';
 
 import pedidoRouter from './routes/pedidoRouter.js';
 import clienteRouter from './routes/clienteRouter.js';
-import menuRouter from './routes/menuRouter.js'
 
 dotenv.config();
 
@@ -26,9 +25,20 @@ app.use(prismaMiddleware);
 
 // Rotas
 app.use('/api', pedidoRouter);
-app.use('/api', menuRouter);
 app.use('/api', clienteRouter);
 
+// Rota de verificação de saúde
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'OK' });
+});
+
+// Tratamento de erros global
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Erro interno do servidor' });
+});
+
+// Iniciar o servidor
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
