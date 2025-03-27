@@ -1,8 +1,12 @@
-const express = require("express");
+import express from "express";
+import { 
+    criarClienteController, 
+    buscarClientePorMesaController 
+} from "../controllers/clienteController.js";
+
 const router = express.Router();
-const clienteController = require("../controllers/clienteController");
 
-router.post("/clientes", clienteController.criarCliente);
-router.get("/clientes/mesa/:mesaNumero", clienteController.buscarClientePorMesa);
+router.post("/clientes", criarClienteController);
+router.get("/clientes/mesa/:mesaNumero", buscarClientePorMesaController);
 
-module.exports = router;
+export default router;

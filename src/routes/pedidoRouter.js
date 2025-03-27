@@ -1,10 +1,16 @@
-const express = require("express");
+import express from "express";
+import { 
+    criarPedidoController, 
+    listarPedidosController, 
+    buscarPedidoPorIdController, 
+    cancelarPedidoController 
+} from "../controllers/pedidoController.js";
+
 const router = express.Router();
-const pedidoController = require("../controllers/pedidoController");
 
-router.post("/pedidos", pedidoController.criarPedido);
-router.get("/pedidos", pedidoController.listarPedidos);
-router.get("/pedidos/:id", pedidoController.buscarPedidoPorId);
-router.delete("/pedidos/:id", pedidoController.cancelarPedido);
+router.post("/pedidos", criarPedidoController);
+router.get("/pedidos", listarPedidosController);
+router.get("/pedidos/:id", buscarPedidoPorIdController);
+router.delete("/pedidos/:id", cancelarPedidoController);
 
-module.exports = router;
+export default router;

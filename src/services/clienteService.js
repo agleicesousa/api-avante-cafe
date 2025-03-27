@@ -1,6 +1,6 @@
-const prisma = require("../config/database");
+import prisma from "../config/database.js";
 
-const criarCliente = async (nome, mesaNumero) => {
+export const criarCliente = async (nome, mesaNumero) => {
     return await prisma.cliente.create({
         data: {
             nome,
@@ -12,7 +12,7 @@ const criarCliente = async (nome, mesaNumero) => {
     });
 };
 
-const buscarClientePorMesa = async (mesaNumero) => {
+export const buscarClientePorMesa = async (mesaNumero) => {
     return await prisma.cliente.findFirst({
         where: {
             mesaNumero: parseInt(mesaNumero),
@@ -22,9 +22,4 @@ const buscarClientePorMesa = async (mesaNumero) => {
             mesa: true,
         },
     });
-};
-
-module.exports = {
-    criarCliente,
-    buscarClientePorMesa
 };

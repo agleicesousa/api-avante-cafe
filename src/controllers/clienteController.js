@@ -1,6 +1,7 @@
-const clienteService = require("../services/clienteService");
+import { criarCliente, buscarClientePorMesa } from "../services/clienteService.js";
+import prisma from "../config/database.js";
 
-const criarCliente = async (req, res) => {
+export const criarClienteController = async (req, res) => {
     try {
         const { nome, mesaNumero } = req.body;
 
@@ -13,22 +14,22 @@ const criarCliente = async (req, res) => {
             }
         }
 
-        const cliente = await clienteService.criarCliente(nome, mesaNumero);
+        const cliente = await criarCliente(nome, mesaNumero);
         res.status(201).json(cliente);
     } catch (error) {
         res.status(500).json({ error: "Erro ao criar cliente" });
     }
 };
 
-const buscarClientePorMesa = async (req, res) => {
+export const buscarClientePorMesaController = async (req, res) => {
     try {
-        const { mesaId } = req.params;
+        const { mesaNumero } = req.params;
 
-        if (!mesaId) {
-            return res.status(400).json({ error: "ID da mesa é obrigatório" });
+        if (!mesaNumero) {
+            return res.status(400).json({ error: "Número da mesa é obrigatório" });
         }
 
-        const cliente = await clienteService.buscarClientePorMesa(mesaId);
+        const cliente = await buscarClientePorMesa(mesaNumero);
 
         if (!cliente) {
             return res
@@ -41,9 +42,4 @@ const buscarClientePorMesa = async (req, res) => {
         console.error("Erro ao buscar cliente por mesa:", error);
         res.status(500).json({ error: "Erro ao buscar cliente" });
     }
-};
-
-module.exports = {
-    criarCliente,
-    buscarClientePorMesa,
 };

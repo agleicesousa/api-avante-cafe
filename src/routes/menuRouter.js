@@ -3,15 +3,18 @@ import {
   adicionarItemMenu,
   buscarItemMenuPorId,
   buscarItensMenuPorCategoria,
-  listarTodosItensMenu
+  listarTodosItensMenu,
+  handleAtualizarItemMenu,
+  handleDesativarItemMenu
 } from '../controllers/menuController.js';
 
 const router = express.Router();
 
-// Rotas para o menu
-router.post('/itens', adicionarItemMenu);
-router.get('/itens', listarTodosItensMenu);
-router.get('/itens/:id', buscarItemMenuPorId);
-router.get('/itens/categoria/:categoria', buscarItensMenuPorCategoria);
+router.post('/menu/itens', adicionarItemMenu);
+router.get('/menu/itens', listarTodosItensMenu);
+router.get('/menu/itens/:id', buscarItemMenuPorId);
+router.get('/menu/itens/categoria/:categoria', buscarItensMenuPorCategoria);
+router.put('/menu/itens/:id', handleAtualizarItemMenu);
+router.delete('/menu/itens/:id', handleDesativarItemMenu);
 
 export default router;
