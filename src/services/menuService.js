@@ -70,8 +70,8 @@ const listarTodosItens = async () => {
 };
 
 module.exports = {
-    criarMenu,
-    listarItens,
-    buscaDeCategoria,
-    listagemTotal
+    criarItemMenu,
+    buscarItemPorId,
+    buscarItensPorCategoria,
+    listarTodosItens
 };
