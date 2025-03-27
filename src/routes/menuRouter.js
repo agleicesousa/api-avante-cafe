@@ -1,16 +1,17 @@
 import express from 'express';
 import {
-  criarMenu,
-  listarItens,
-  buscaDeCategoria,
-  listagemTotal
+  adicionarItemMenu,
+  buscarItemMenuPorId,
+  buscarItensMenuPorCategoria,
+  listarTodosItensMenu
 } from '../controllers/menuController.js';
 
 const router = express.Router();
 
-router.post('/menu', criarMenu);
-router.get('/menu/:id', listarItens);
-router.get('/menu/categoria/:categoria', buscaDeCategoria);
-router.get('/menu', listagemTotal);
+// Rotas para o menu
+router.post('/itens', adicionarItemMenu);
+router.get('/itens', listarTodosItensMenu);
+router.get('/itens/:id', buscarItemMenuPorId);
+router.get('/itens/categoria/:categoria', buscarItensMenuPorCategoria);
 
 export default router;
