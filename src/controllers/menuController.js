@@ -61,21 +61,34 @@ export const buscarItemMenuPorId = async (req, res) => {
   }
 };
 
-//Buscar por categoria
-export const getMenuItemsByCategory = async (req, res) => {
+// Buscar itens por categoria
+export const buscarItensMenuPorCategoria = async (req, res) => {
   const { categoria } = req.params;
+
   try {
-    const produtos = await buscaDeCategoria(categoria);
-    if (produtos.length > 0) {
-      res.json(produtos);
-    } else {
-      res.status(404).json({ message: 'Nenhum produto encontrado para esta categoria' });
+    const itens = await buscarItensPorCategoria(categoria);
+
+    if (itens.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Nenhum item encontrado para esta categoria'
+      });
     }
+
+    res.json({
+      success: true,
+      data: itens,
+      count: itens.length
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Erro ao buscar produtos', error: error.message });
+    console.error('Erro ao buscar itens por categoria:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro ao buscar itens por categoria',
+      error: error.message
+    });
   }
 };
-
 
 //Listagem completa
 export const getAllMenuItems = async (req, res) => {

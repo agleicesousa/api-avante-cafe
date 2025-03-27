@@ -15,7 +15,7 @@ const criarItemMenu = async (nome, preco, categoria, imagem = null) => {
                 imagem
             }
         });
-        
+
         return novoItem;
     } catch (error) {
         console.error('Erro no serviço ao criar item:', error);
@@ -41,18 +41,17 @@ const buscarItemPorId = async (id) => {
     }
 };
 
-const buscaDeCategoria = async (categoria) => {
+// Buscar itens por categoria
+const buscarItensPorCategoria = async (categoria) => {
     try {
-        const produtos = await prisma.menu.findMany({
-            where: {
-                categoria
-            }
+        const itens = await prisma.menu.findMany({
+            where: { categoria: { equals: categoria, mode: 'insensitive' } }
         });
-        return produtos;
 
+        return itens;
     } catch (error) {
-        throw new Error('Erro ao encontrar categorias' + error.message);
-
+        console.error('Erro no serviço ao buscar por categoria:', error);
+        throw new Error(`Falha ao buscar itens por categoria: ${error.message}`);
     }
 };
 
